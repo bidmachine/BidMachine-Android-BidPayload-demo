@@ -110,6 +110,15 @@ public class MainActivity extends AppCompatActivity {
         adContainer.addView(view);
     }
 
+    private boolean isBidPayloadValid(String bidPayload) {
+        if (TextUtils.isEmpty(bidPayload)) {
+            Log.d(TAG, "idPayload is null or empty");
+            Toast.makeText(this, "bidPayload is null or empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     private void loadBanner() {
         bShowBanner.setEnabled(false);
 
@@ -117,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
         destroyBanner();
 
         String bidPayload = Utils.readFile(this, "banner_bid_payload.txt");
-        if (TextUtils.isEmpty(bidPayload)) {
-            Log.d(TAG, "bidPayload is null or empty");
+        if (!isBidPayloadValid(bidPayload)) {
+            return;
         }
 
         BannerRequest bannerRequest = new BannerRequest.Builder()
@@ -163,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
         destroyMrec();
 
         String bidPayload = Utils.readFile(this, "mrec_bid_payload.txt");
-        if (TextUtils.isEmpty(bidPayload)) {
-            Log.d(TAG, "bidPayload is null or empty");
+        if (!isBidPayloadValid(bidPayload)) {
+            return;
         }
 
         BannerRequest bannerRequest = new BannerRequest.Builder()
@@ -208,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
         // Destroy previous ad
         destroyInterstitial();
 
-        String bidPayload = Utils.readFile(this, "mrec_bid_payload.txt");
-        if (TextUtils.isEmpty(bidPayload)) {
-            Log.d(TAG, "bidPayload is null or empty");
+        String bidPayload = Utils.readFile(this, "interstitial_bid_payload.txt");
+        if (!isBidPayloadValid(bidPayload)) {
+            return;
         }
 
         InterstitialRequest interstitialRequest = new InterstitialRequest.Builder()
@@ -253,9 +262,9 @@ public class MainActivity extends AppCompatActivity {
         // Destroy previous ad
         destroyRewarded();
 
-        String bidPayload = Utils.readFile(this, "mrec_bid_payload.txt");
-        if (TextUtils.isEmpty(bidPayload)) {
-            Log.d(TAG, "bidPayload is null or empty");
+        String bidPayload = Utils.readFile(this, "rewarded_bid_payload.txt");
+        if (!isBidPayloadValid(bidPayload)) {
+            return;
         }
 
         RewardedRequest rewardedRequest = new RewardedRequest.Builder()
@@ -299,8 +308,8 @@ public class MainActivity extends AppCompatActivity {
         destroyNative();
 
         String bidPayload = Utils.readFile(this, "native_bid_payload.txt");
-        if (TextUtils.isEmpty(bidPayload)) {
-            Log.d(TAG, "bidPayload is null or empty");
+        if (!isBidPayloadValid(bidPayload)) {
+            return;
         }
 
         NativeRequest nativeRequest = new NativeRequest.Builder()
