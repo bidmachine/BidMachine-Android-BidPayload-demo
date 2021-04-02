@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(bidPayload)) {
             Log.d(TAG, "idPayload is null or empty");
             Toast.makeText(this, "bidPayload is null or empty", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void loadBanner() {
