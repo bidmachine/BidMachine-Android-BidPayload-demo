@@ -142,37 +142,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bLoadNative"
-                style="@style/MaterialButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/button_margin"
-                android:layout_marginRight="@dimen/button_margin"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:text="@string/load_native"
-                android:textSize="@dimen/button_text_size" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bShowNative"
-                style="@style/MaterialButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/button_margin"
-                android:layout_marginRight="@dimen/button_margin"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:text="@string/show_native"
-                android:textSize="@dimen/button_text_size" />
-
-        </LinearLayout>
-
         <FrameLayout
             android:id="@+id/adContainer"
             android:layout_width="match_parent"

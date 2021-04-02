@@ -3,7 +3,6 @@ package io.bidmachine.examples;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import io.bidmachine.BidMachine;
-import io.bidmachine.MediaAssetType;
 import io.bidmachine.banner.BannerListener;
 import io.bidmachine.banner.BannerRequest;
 import io.bidmachine.banner.BannerSize;
@@ -22,10 +20,6 @@ import io.bidmachine.banner.BannerView;
 import io.bidmachine.interstitial.InterstitialAd;
 import io.bidmachine.interstitial.InterstitialListener;
 import io.bidmachine.interstitial.InterstitialRequest;
-import io.bidmachine.nativead.NativeAd;
-import io.bidmachine.nativead.NativeListener;
-import io.bidmachine.nativead.NativeRequest;
-import io.bidmachine.nativead.view.NativeAdContentLayout;
 import io.bidmachine.rewarded.RewardedAd;
 import io.bidmachine.rewarded.RewardedListener;
 import io.bidmachine.rewarded.RewardedRequest;
@@ -45,16 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private Button bShowInterstitial;
     private Button bLoadRewarded;
     private Button bShowRewarded;
-    private Button bLoadNative;
-    private Button bShowNative;
     private FrameLayout adContainer;
 
     private BannerView bannerView;
     private BannerView mrecView;
     private InterstitialAd interstitialAd;
     private RewardedAd rewardedAd;
-    private NativeAd nativeAd;
-    private NativeAdContentLayout nativeAdContentLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,10 +69,6 @@ public class MainActivity extends AppCompatActivity {
         bLoadRewarded.setOnClickListener(v -> loadRewarded());
         bShowRewarded = findViewById(R.id.bShowRewarded);
         bShowRewarded.setOnClickListener(v -> showRewarded());
-        bLoadNative = findViewById(R.id.bLoadNative);
-        bLoadNative.setOnClickListener(v -> loadNative());
-        bShowNative = findViewById(R.id.bShowNative);
-        bShowNative.setOnClickListener(v -> showNative());
 
         adContainer = findViewById(R.id.adContainer);
     }
@@ -102,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         bLoadMrec.setEnabled(true);
         bLoadInterstitial.setEnabled(true);
         bLoadRewarded.setEnabled(true);
-        bLoadNative.setEnabled(true);
     }
 
     private void addAdView(View view) {
@@ -110,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         adContainer.addView(view);
     }
 
-    private boolean isBidPayloadValid(String bidPayload) {
+    private boolean isBidPayloadInvalid(String bidPayload) {
         if (TextUtils.isEmpty(bidPayload)) {
             Log.d(TAG, "idPayload is null or empty");
             Toast.makeText(this, "bidPayload is null or empty", Toast.LENGTH_SHORT).show();
@@ -126,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         destroyBanner();
 
         String bidPayload = Utils.readFile(this, "banner_bid_payload.txt");
-        if (!isBidPayloadValid(bidPayload)) {
+        if (isBidPayloadInvalid(bidPayload)) {
             return;
         }
 
@@ -172,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         destroyMrec();
 
         String bidPayload = Utils.readFile(this, "mrec_bid_payload.txt");
-        if (!isBidPayloadValid(bidPayload)) {
+        if (isBidPayloadInvalid(bidPayload)) {
             return;
         }
 
@@ -218,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         destroyInterstitial();
 
         String bidPayload = Utils.readFile(this, "interstitial_bid_payload.txt");
-        if (!isBidPayloadValid(bidPayload)) {
+        if (isBidPayloadInvalid(bidPayload)) {
             return;
         }
 
@@ -263,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         destroyRewarded();
 
         String bidPayload = Utils.readFile(this, "rewarded_bid_payload.txt");
-        if (!isBidPayloadValid(bidPayload)) {
+        if (isBidPayloadInvalid(bidPayload)) {
             return;
         }
 
@@ -298,61 +283,6 @@ public class MainActivity extends AppCompatActivity {
             rewardedAd.setListener(null);
             rewardedAd.destroy();
             rewardedAd = null;
-        }
-    }
-
-    private void loadNative() {
-        bShowNative.setEnabled(false);
-
-        // Destroy previous ad
-        destroyNative();
-
-        String bidPayload = Utils.readFile(this, "native_bid_payload.txt");
-        if (!isBidPayloadValid(bidPayload)) {
-            return;
-        }
-
-        NativeRequest nativeRequest = new NativeRequest.Builder()
-                .setMediaAssetTypes(MediaAssetType.Icon, MediaAssetType.Image)
-                .setBidPayload(bidPayload)
-                .build();
-
-        nativeAd = new NativeAd(this);
-        nativeAd.setListener(new NativeAdListener());
-        nativeAd.load(nativeRequest);
-
-        Log.d(TAG, "loadNative");
-    }
-
-    private void showNative() {
-        Log.d(TAG, "showNative");
-
-        bShowNative.setEnabled(false);
-
-        if (nativeAd != null && nativeAd.canShow()) {
-            nativeAdContentLayout = (NativeAdContentLayout) LayoutInflater
-                    .from(this)
-                    .inflate(R.layout.native_ad, adContainer, false);
-            nativeAdContentLayout.bind(nativeAd);
-            nativeAdContentLayout.registerViewForInteraction(nativeAd);
-            addAdView(nativeAdContentLayout);
-        } else {
-            Log.d(TAG, "show error - native object not loaded");
-        }
-    }
-
-    private void destroyNative() {
-        Log.d(TAG, "destroyNative");
-
-        if (nativeAdContentLayout != null) {
-            nativeAdContentLayout.unregisterViewForInteraction();
-            nativeAdContentLayout.destroy();
-            nativeAdContentLayout = null;
-        }
-        if (nativeAd != null) {
-            nativeAd.setListener(null);
-            nativeAd.destroy();
-            nativeAd = null;
         }
     }
 
@@ -532,44 +462,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onAdExpired(@NonNull RewardedAd rewardedAd) {
             Log.d(TAG, "RewardedAdListener - onAdExpired");
-        }
-
-    }
-
-    private class NativeAdListener implements NativeListener {
-
-        @Override
-        public void onAdLoaded(@NonNull NativeAd nativeAd) {
-            bShowNative.setEnabled(true);
-
-            Log.d(TAG, "NativeAdListener - onAdLoaded");
-            Toast.makeText(MainActivity.this, "Native Loaded", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onAdLoadFailed(@NonNull NativeAd nativeAd, @NonNull BMError bmError) {
-            Log.d(TAG, "NativeAdListener - onAdLoadFailed: " + bmError.getMessage());
-            Toast.makeText(MainActivity.this, "Native LoadFailed", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onAdShown(@NonNull NativeAd nativeAd) {
-            Log.d(TAG, "NativeAdListener - onAdShown");
-        }
-
-        @Override
-        public void onAdImpression(@NonNull NativeAd nativeAd) {
-            Log.d(TAG, "NativeAdListener - onAdImpression");
-        }
-
-        @Override
-        public void onAdClicked(@NonNull NativeAd nativeAd) {
-            Log.d(TAG, "NativeAdListener - onAdClicked");
-        }
-
-        @Override
-        public void onAdExpired(@NonNull NativeAd nativeAd) {
-            Log.d(TAG, "NativeAdListener - onAdExpired");
         }
 
     }

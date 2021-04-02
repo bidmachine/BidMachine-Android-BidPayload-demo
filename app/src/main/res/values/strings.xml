@@ -10,7 +10,5 @@
     <string name="show_interstitial">Show Interstitial</string>
     <string name="load_rewarded">Load Rewarded</string>
     <string name="show_rewarded">Show Rewarded</string>
-    <string name="load_native">Load Native</string>
-    <string name="show_native">Show Native</string>
 
 </resources>
