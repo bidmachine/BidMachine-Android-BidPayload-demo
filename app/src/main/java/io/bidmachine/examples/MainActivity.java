@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initialize");
 
         // Initialize BidMachine SDK first
+        BidMachine.setLoggingEnabled(true);
         BidMachine.initialize(this, BID_MACHINE_SELLER_ID);
 
         bInitialize.setEnabled(false);
