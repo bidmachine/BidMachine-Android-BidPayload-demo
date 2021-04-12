@@ -21,7 +21,7 @@ BannerView bannerView = new BannerView(context);
 bannerView.setListener(bannerListener);
 bannerView.load(bannerRequest);
 ```
-[*Example*](src/main/java/io/bidmachine/examples/MainActivity.java#L108)
+[*Example*](app/src/main/java/io/bidmachine/examples/MainActivity.java#L108)
 
 ## Mrec
 ```java
@@ -39,7 +39,7 @@ BannerView bannerView = new BannerView(context);
 bannerView.setListener(bannerListener);
 bannerView.load(bannerRequest);
 ```
-[*Example*](src/main/java/io/bidmachine/examples/MainActivity.java#L154)
+[*Example*](app/src/main/java/io/bidmachine/examples/MainActivity.java#L154)
 
 ## Interstitial
 ```java
@@ -56,7 +56,7 @@ InterstitialAd interstitialAd = new InterstitialAd(context);
 interstitialAd.setListener(interstitialListener);
 interstitialAd.load(interstitialRequest);
 ```
-[*Example*](src/main/java/io/bidmachine/examples/MainActivity.java#L200)
+[*Example*](app/src/main/java/io/bidmachine/examples/MainActivity.java#L200)
 
 ## Rewarded
 ```java
@@ -73,4 +73,4 @@ RewardedAd rewardedAd = new RewardedAd(context);
 rewardedAd.setListener(rewardedListener);
 rewardedAd.load(rewardedRequest);
 ```
-[*Example*](src/main/java/io/bidmachine/examples/MainActivity.java#L245)
+[*Example*](app/src/main/java/io/bidmachine/examples/MainActivity.java#L245)
